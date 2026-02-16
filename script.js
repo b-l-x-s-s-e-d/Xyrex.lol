@@ -9,7 +9,7 @@
    To add a product:
     - Copy one object in the array and update fields.
     - Keep priceValue numeric for paid products and null for free/lifetime.
-    - tagsDropdown controls the card's Tags dropdown list.
+    - tags controls legend-style state symbols used on each card.
 */
 const products = [
   {
@@ -17,81 +17,90 @@ const products = [
     platform: ["Windows", "macOS"],
     cheatType: "Internal",
     keySystem: "Keyless",
-    tags: ["Internal", "Trending"],
-    // Add/remove Tags menu entries by editing this array only.
-    tagsDropdown: ["Internal", "Trending", "Verified"],
+    tags: ["Internal", "Trending", "Verified"],
     features: ["Decompiler", "Multi-instance"],
     sunc: 97,
-    summary: "Lightweight decompiler with fast analysis and multi-instance support.",
-    details: "Aether Decompiler offers symbol recovery, smart heuristics, and plugin support. Designed for performance on modern CPUs.",
-    issues: ["Minor UI lag on initial load", "Some heuristics false-positive in corner cases"],
-    price: "$5.99 • 7 days",
+    description: "Aether Decompiler is a performance-first executor toolkit focused on rapid reverse analysis and reliable multi-instance execution. It includes quick symbol recovery, plugin extensibility, and a streamlined setup flow for users who need fast iteration without sacrificing advanced controls.",
+    pros: ["Fast startup and analysis pipeline", "Extensible plugin architecture", "Strong multi-instance stability"],
+    cons: ["Minor UI lag on first launch", "Heuristics can over-flag edge cases"],
+    pricingOptions: ["Weekly — $5.99", "Monthly — $17.99", "Lifetime — $69.99"],
     priceValue: 5.99,
-    durationDays: 7
+    durationDays: 7,
+    stability: "Very Stable",
+    trustLevel: "High",
+    status: "Undetected"
   },
   {
     name: "KernelForge",
     platform: ["Windows"],
     cheatType: "External",
     keySystem: "Keyed",
-    tags: ["Kernel", "Verified"],
-    tagsDropdown: ["Kernel", "Verified", "External"],
+    tags: ["Kernel", "Verified", "External"],
     features: ["Kernel"],
     sunc: 88,
-    summary: "Robust kernel-level hooking utilities for advanced tasks.",
-    details: "KernelForge provides a secure kernel driver, with fallback and safety checks. Intended for advanced users.",
-    issues: ["Requires driver signing workaround on some systems"],
-    price: "$19.99 • 30 days",
+    description: "KernelForge delivers kernel-level tooling for advanced users who need deeper system interaction. Its driver stack includes fallback protections and validation checks designed to reduce risky misconfiguration during heavy operation sessions.",
+    pros: ["Deep kernel integration", "Reliable fallback protections", "Strong control for advanced workflows"],
+    cons: ["Driver signing workaround needed on some setups"],
+    pricingOptions: ["Weekly — $8.99", "Monthly — $19.99", "Lifetime — $89.99"],
     priceValue: 19.99,
-    durationDays: 30
+    durationDays: 30,
+    stability: "Stable",
+    trustLevel: "High",
+    status: "Updating"
   },
   {
     name: "Nebula AI Runner",
     platform: ["Android", "iOS"],
     cheatType: "External",
     keySystem: "Keyless",
-    tags: ["AI", "Supports VNG"],
-    tagsDropdown: ["AI", "Supports VNG", "Warning"],
+    tags: ["AI", "Supports VNG", "Warning"],
     features: ["Multi-instance", "Decompiler"],
     sunc: 92,
-    summary: "AI-powered assistant for automated analysis and large-batch runs.",
-    details: "Nebula uses advanced ML to detect patterns and accelerate workflows. Cloud-backed features available.",
-    issues: ["Cloud sync occasionally slow in AU region"],
-    price: "Lifetime",
+    description: "Nebula AI Runner blends AI-assisted pattern detection with automation controls for batch execution. It is built for mobile-first environments and offers optional cloud-backed services for syncing profiles and job presets.",
+    pros: ["Great for large-batch automation", "AI-assisted detection workflows", "Cross-mobile platform support"],
+    cons: ["Cloud synchronization can be region-dependent"],
+    pricingOptions: ["Weekly — $4.99", "Monthly — $14.99", "Lifetime — $59.99"],
     priceValue: null,
-    durationDays: null
+    durationDays: null,
+    stability: "Stable",
+    trustLevel: "Medium",
+    status: "Working"
   },
   {
     name: "MiniCore",
     platform: ["Windows", "Android"],
     cheatType: "Internal",
     keySystem: "Keyless",
-    tags: ["Internal", "Supports VNG"],
-    tagsDropdown: ["Internal", "Supports VNG", "Trending"],
+    tags: ["Internal", "Supports VNG", "Trending"],
     features: ["Multi-instance"],
     sunc: 71,
-    summary: "Compact executor focused on low-latency multi-instance runs.",
-    details: "MiniCore is optimized for low footprint and quick spins of many instances.",
-    issues: ["Some incompatibility with older GPUs"],
-    price: "$3.99 • 3 days",
+    description: "MiniCore is a compact executor tuned for lower-end hardware and low-latency launch times. It prioritizes a minimal footprint while still supporting rapid multi-instance sessions for users who need lightweight performance.",
+    pros: ["Low resource usage", "Fast spin-up for multi-instance runs"],
+    cons: ["Reduced compatibility on older GPUs"],
+    pricingOptions: ["Weekly — $3.99", "Monthly — $10.99", "Lifetime — $39.99"],
     priceValue: 3.99,
-    durationDays: 3
+    durationDays: 3,
+    stability: "Moderate",
+    trustLevel: "Medium",
+    status: "Detected"
   },
   {
     name: "Sigma Suite",
     platform: ["macOS"],
     cheatType: "External",
     keySystem: "Keyed",
-    tags: ["Warning"],
-    tagsDropdown: ["Warning", "External"],
+    tags: ["Warning", "External"],
     features: [],
     sunc: 60,
-    summary: "A feature-rich suite — use caution; active maintenance required.",
-    details: "Sigma Suite packs many tools but requires careful configuration and maintenance.",
-    issues: ["Known to conflict with some antivirus", "Setup can be complex"],
-    price: "$12.00 • 14 days",
+    description: "Sigma Suite includes a broad utility bundle and configuration system, but it requires careful setup and regular maintenance to stay dependable. It is suited to experienced users willing to tune and monitor behavior closely.",
+    pros: ["Broad utility set", "Flexible configuration options"],
+    cons: ["Can conflict with antivirus software", "Setup complexity is higher than average"],
+    pricingOptions: ["Weekly — $6.99", "Monthly — $12.00", "Lifetime — $49.99"],
     priceValue: 12.0,
-    durationDays: 14
+    durationDays: 14,
+    stability: "Unstable",
+    trustLevel: "Low",
+    status: "Discontinued"
   }
 ];
 
@@ -104,43 +113,51 @@ const featureIconMap = {
 const qs = sel => document.querySelector(sel);
 const qsa = sel => Array.from(document.querySelectorAll(sel));
 
-function createTagsDropdown(product) {
+const tagSymbolMap = {
+  Verified: { symbol: '✓', cls: 'verified' },
+  Warning: { symbol: '!', cls: 'warning' },
+  Trending: { symbol: '↗', cls: 'trending' },
+  Internal: { symbol: '⇄', cls: 'io' },
+  External: { symbol: '⇄', cls: 'io' }
+};
+
+function createTagSymbols(product) {
   const wrap = document.createElement('div');
-  wrap.className = 'tag-dropdown';
+  wrap.className = 'tag-symbols';
 
-  const toggle = document.createElement('button');
-  toggle.className = 'tags-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Tags';
-  toggle.setAttribute('aria-expanded', 'false');
-
-  const menu = document.createElement('ul');
-  menu.className = 'tags-menu';
-
-  const entries = Array.isArray(product.tagsDropdown) ? product.tagsDropdown : [];
-  entries.forEach(tag => {
-    const item = document.createElement('li');
-    item.textContent = tag;
-    menu.appendChild(item);
+  const uniqueTags = [...new Set(product.tags || [])];
+  uniqueTags.forEach(tag => {
+    const config = tagSymbolMap[tag];
+    if (!config) return;
+    const marker = document.createElement('span');
+    marker.className = `legend-icon ${config.cls}`;
+    marker.textContent = config.symbol;
+    marker.title = tag;
+    marker.setAttribute('aria-label', tag);
+    wrap.appendChild(marker);
   });
 
-  toggle.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const willOpen = !wrap.classList.contains('open');
-    qsa('.tag-dropdown.open').forEach(node => {
-      node.classList.remove('open');
-      const btn = node.querySelector('.tags-toggle');
-      if (btn) btn.setAttribute('aria-expanded', 'false');
-    });
+  return wrap;
+}
 
-    if (willOpen) {
-      wrap.classList.add('open');
-      toggle.setAttribute('aria-expanded', 'true');
-    }
+const platformIconMap = {
+  Windows: '🪟',
+  macOS: '',
+  Android: '🤖',
+  iOS: ''
+};
+
+function createPlatformChips(platforms) {
+  const wrap = document.createElement('div');
+  wrap.className = 'platform-chips';
+
+  (platforms || []).forEach(platform => {
+    const chip = document.createElement('span');
+    chip.className = 'platform-chip';
+    chip.innerHTML = `<span class="platform-logo">${platformIconMap[platform] || '•'}</span><span>${escapeHtml(platform)}</span>`;
+    wrap.appendChild(chip);
   });
 
-  wrap.appendChild(toggle);
-  wrap.appendChild(menu);
   return wrap;
 }
 
@@ -160,17 +177,19 @@ function createProductCard(product, index) {
   name.className = 'product-name';
   name.textContent = product.name;
 
+  left.appendChild(name);
+  const right = document.createElement('div');
+  right.className = 'card-header-right';
+
   const sunc = document.createElement('div');
   sunc.className = 'sunc';
   sunc.textContent = `sUNC ${product.sunc}%`;
 
-  left.appendChild(name);
-  left.appendChild(sunc);
-
-  const tagsDropdown = createTagsDropdown(product);
+  right.appendChild(sunc);
+  right.appendChild(createTagSymbols(product));
 
   header.appendChild(left);
-  header.appendChild(tagsDropdown);
+  header.appendChild(right);
 
   const featuresRow = document.createElement('div');
   featuresRow.className = 'features-row';
@@ -186,21 +205,19 @@ function createProductCard(product, index) {
     featuresRow.appendChild(ic);
   });
 
-  const platformSmall = document.createElement('div');
-  platformSmall.className = 'small';
-  platformSmall.textContent = 'Platforms: ' + (product.platform.join(', ') || '—');
+  const platformChips = createPlatformChips(product.platform);
 
   const summary = document.createElement('p');
   summary.className = 'summary';
-  summary.textContent = product.summary;
+  summary.textContent = product.description;
 
   const price = document.createElement('div');
   price.className = 'price';
-  price.textContent = product.price || '—';
+  price.textContent = (product.pricingOptions && product.pricingOptions[0]) || '—';
 
   body.appendChild(header);
   body.appendChild(featuresRow);
-  body.appendChild(platformSmall);
+  body.appendChild(platformChips);
   body.appendChild(summary);
   body.appendChild(price);
 
@@ -269,8 +286,7 @@ function applyAllFilters() {
     }
 
     if (active.tags && active.tags.length) {
-      const combinedTags = [...(prod.tags || []), ...(prod.tagsDropdown || [])];
-      const matches = active.tags.some(t => combinedTags.includes(t));
+      const matches = active.tags.some(t => (prod.tags || []).includes(t));
       if (!matches) return false;
     }
 
@@ -297,34 +313,45 @@ function openModal(product) {
 
   content.innerHTML = `
     <h2>${escapeHtml(product.name)}</h2>
-    <div class="modal-section">
-      <strong>Summary</strong>
-      <p>${escapeHtml(product.summary)}</p>
-    </div>
+    <div class="modal-layout">
+      <div>
+        <div class="modal-section">
+          <strong>Description</strong>
+          <p>${escapeHtml(product.description)}</p>
+        </div>
 
-    <div class="modal-section">
-      <strong>Full description</strong>
-      <p>${escapeHtml(product.details)}</p>
-    </div>
+        <div class="modal-section">
+          <strong>Pros</strong>
+          <ul>${product.pros.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul>
+        </div>
 
-    <div class="modal-section">
-      <strong>Features</strong>
-      <ul>${product.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul>
-    </div>
+        <div class="modal-section">
+          <strong>Cons</strong>
+          <ul>${product.cons.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+        </div>
 
-    <div class="modal-section">
-      <strong>Issues</strong>
-      <ul>${product.issues.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
-    </div>
+        <div class="modal-section">
+          <strong>Pricing</strong>
+          <ul>${product.pricingOptions.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+        </div>
 
-    <div class="modal-section">
-      <strong>Pricing</strong>
-      <p>${escapeHtml(product.price)}</p>
-    </div>
+        <div class="modal-section">
+          <strong>Compatibility</strong>
+          <p class="small">Cheat Type: ${escapeHtml(product.cheatType)} • Key System: ${escapeHtml(product.keySystem)} • sUNC ${escapeHtml(product.sunc)}%</p>
+        </div>
 
-    <div class="modal-section">
-      <strong>Metadata</strong>
-      <p class="small">Platforms: ${product.platform.join(', ') || '—'} • Cheat: ${product.cheatType} • Key system: ${product.keySystem} • sUNC ${product.sunc}%</p>
+        <div class="modal-section">
+          <strong>Platform</strong>
+          <div class="platform-chips">${product.platform.map(platform => `<span class="platform-chip"><span class="platform-logo">${platformIconMap[platform] || '•'}</span><span>${escapeHtml(platform)}</span></span>`).join('')}</div>
+        </div>
+      </div>
+
+      <aside class="status-panel">
+        <h3>Status</h3>
+        <div class="status-item"><span>Stability</span><strong>${escapeHtml(product.stability)}</strong></div>
+        <div class="status-item"><span>Trust Level</span><strong>${escapeHtml(product.trustLevel)}</strong></div>
+        <div class="status-item"><span>Current State</span><strong>${escapeHtml(product.status)}</strong></div>
+      </aside>
     </div>
   `;
 
@@ -365,18 +392,9 @@ function init() {
     if (e.target === qs('#modalOverlay')) closeModal();
   });
 
-  document.addEventListener('click', () => {
-    qsa('.tag-dropdown.open').forEach(node => {
-      node.classList.remove('open');
-      const btn = node.querySelector('.tags-toggle');
-      if (btn) btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeModal();
-      qsa('.tag-dropdown.open').forEach(node => node.classList.remove('open'));
     }
   });
 
