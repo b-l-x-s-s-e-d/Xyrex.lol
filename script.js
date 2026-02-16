@@ -297,7 +297,8 @@ function applyAllFilters() {
     }
 
     if (active.tags && active.tags.length) {
-      const matches = active.tags.some(t => (prod.tags || []).includes(t));
+      const productTags = [...(prod.tags || []), ...(prod.features || [])];
+      const matches = active.tags.some(t => productTags.includes(t));
       if (!matches) return false;
     }
 
