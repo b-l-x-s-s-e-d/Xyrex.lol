@@ -8,7 +8,7 @@
    ================================
    To add a product:
     - Copy one object in the array and update fields.
-    - Set freeOrPaid to "paid" or "free".
+    - Set costDisplay to "free", "paid", or "both".
     - tags controls legend-style state symbols used on each card.
 */
 const products = [
@@ -246,6 +246,10 @@ function createProductCard(product, index) {
 
   const platformChips = createPlatformChips(product.platform);
 
+  const keyBadge = document.createElement('div');
+  keyBadge.className = `key-system-badge ${String(product.keySystem || '').toLowerCase() === 'keyless' ? 'is-keyless' : 'is-keyed'}`;
+  keyBadge.textContent = `Key: ${product.keySystem || 'Unknown'}`;
+
   const summary = document.createElement('p');
   summary.className = 'summary';
   summary.textContent = product.description;
@@ -256,6 +260,7 @@ function createProductCard(product, index) {
 
   body.appendChild(header);
   body.appendChild(platformChips);
+  body.appendChild(keyBadge);
   body.appendChild(summary);
   body.appendChild(price);
 
@@ -311,16 +316,12 @@ function isPriceMatch(prod, priceControls) {
   const costDisplay = (prod.costDisplay || 'paid').toLowerCase();
   const isFree = costDisplay === 'free' || costDisplay === 'both';
   const isPaid = costDisplay === 'paid' || costDisplay === 'both';
-  const isBoth = costDisplay === 'both';
 
-  // No price checkboxes selected means no restriction.
-  if (!priceControls.free && !priceControls.paid && !priceControls.both) return true;
-
-  let matches = false;
-  if (priceControls.free && isFree) matches = true;
-  if (priceControls.paid && isPaid) matches = true;
-  if (priceControls.both && isBoth) matches = true;
-  return matches;
+  // Free + Paid unchecked means no price restriction.
+  if (!priceControls.free && !priceControls.paid) return true;
+  if (priceControls.free && isFree) return true;
+  if (priceControls.paid && isPaid) return true;
+  return false;
 }
 
 function formatCostDisplay(costDisplay) {
@@ -421,6 +422,31 @@ function closeModal() {
 function escapeHtml(str) {
   if (!str) return '';
   return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+
+const themeStorageKey = 'voxlis_theme_no_gradient';
+
+function applyThemePreference(noGradient) {
+  document.body.classList.toggle('no-gradient-theme', Boolean(noGradient));
+  const toggleBtn = qs('#toggleGradientBtn');
+  if (!toggleBtn) return;
+  toggleBtn.setAttribute('aria-pressed', String(Boolean(noGradient)));
+  toggleBtn.textContent = noGradient ? 'Use Gradient' : 'No Gradient';
+}
+
+function initThemeToggle() {
+  const toggleBtn = qs('#toggleGradientBtn');
+  if (!toggleBtn) return;
+
+  const saved = localStorage.getItem(themeStorageKey);
+  const prefersNoGradient = saved === 'true';
+  applyThemePreference(prefersNoGradient);
+
+  toggleBtn.addEventListener('click', () => {
+    const nextState = !document.body.classList.contains('no-gradient-theme');
+    localStorage.setItem(themeStorageKey, String(nextState));
+    applyThemePreference(nextState);
+  });
 }
 
 
@@ -856,6 +882,7 @@ function initScriptsHub() {
 }
 
 function init() {
+  initThemeToggle();
   renderProducts(products);
   initScriptsHub();
 
