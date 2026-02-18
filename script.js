@@ -577,7 +577,13 @@ const defaultThemeVars = {
   '--accent-2-rgb': '178, 188, 255',
   '--bg-glow': '#1b2141',
   '--accent-gradient': 'linear-gradient(90deg, #7689ff, #9da9ff)',
-  '--btn-gradient': 'linear-gradient(90deg, #8192ff, #adb8ff)'
+  '--btn-gradient': 'linear-gradient(90deg, #8192ff, #adb8ff)',
+  '--nav-gradient': 'linear-gradient(90deg, rgba(8,10,18,0.95), rgba(12,16,30,0.92))',
+  '--sidebar-gradient': 'linear-gradient(160deg, rgba(var(--accent-rgb),0.22), rgba(13,16,30,0.96) 68%)',
+  '--main-gradient': 'linear-gradient(165deg, rgba(var(--accent-rgb),0.2), rgba(12,15,28,0.9) 58%)',
+  '--card-gradient': 'linear-gradient(175deg, rgba(var(--accent-rgb),0.22), rgba(var(--accent-rgb),0.12) 38%, rgba(15,20,36,0.95))',
+  '--chip-surface': 'rgba(14,18,35,.65)',
+  '--surface-soft': 'rgba(17, 24, 46, 0.9)'
 };
 
 const presetThemeBases = {
@@ -679,8 +685,14 @@ function buildThemeFromBase(baseRgb) {
     '--accent-rgb': `${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}`,
     '--accent-2-rgb': accent2Rgb ? `${Math.round(accent2Rgb.r)}, ${Math.round(accent2Rgb.g)}, ${Math.round(accent2Rgb.b)}` : '178, 188, 255',
     '--bg-glow': toneFromHsl(baseHsl, -26, -15),
-    '--accent-gradient': `linear-gradient(90deg, ${toneFromHsl(baseHsl, -2, 4)}, ${toneFromHsl(baseHsl, 8, -2)})`,
-    '--btn-gradient': `linear-gradient(90deg, ${toneFromHsl(baseHsl, 2, 6)}, ${toneFromHsl(baseHsl, 11, -2)})`
+    '--accent-gradient': `linear-gradient(90deg, ${toneFromHsl(baseHsl, -2, 4)}, ${toneFromHsl(baseHsl, 4, 2)})`,
+    '--btn-gradient': `linear-gradient(90deg, ${toneFromHsl(baseHsl, 2, 6)}, ${toneFromHsl(baseHsl, 11, -2)})`,
+    '--nav-gradient': `linear-gradient(90deg, rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.24), rgba(8,12,24,0.94) 52%, rgba(8,12,24,0.96))`,
+    '--sidebar-gradient': `linear-gradient(160deg, rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.30), rgba(10,14,26,0.95) 70%)`,
+    '--main-gradient': `linear-gradient(165deg, rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.26), rgba(12,15,28,0.9) 58%)`,
+    '--card-gradient': `linear-gradient(175deg, rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.26), rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.12) 36%, rgba(15,20,36,0.95))`,
+    '--chip-surface': `rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.15)`,
+    '--surface-soft': `rgba(${Math.round(baseRgb.r)}, ${Math.round(baseRgb.g)}, ${Math.round(baseRgb.b)}, 0.12)`
   };
 }
 
