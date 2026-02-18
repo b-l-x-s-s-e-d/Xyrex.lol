@@ -1,3 +1,3 @@
 # Voxlis.NET-Remake
 
-> https://plutoxqq.github.io/Zyrex.lol/
+> https://plutoxqq.github.io/Xyrex.lol/
