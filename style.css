@@ -105,7 +105,7 @@ a { color: inherit; text-decoration: none; }
 
 .search-input{
   width: 100%;
-  padding: 11px 42px 11px 16px;
+  padding: 11px 86px 11px 16px;
   border-radius: 999px;
   border: 1px solid rgba(var(--accent-2-rgb),0.3);
   background: rgba(20, 26, 48, 0.9);
@@ -117,6 +117,18 @@ a { color: inherit; text-decoration: none; }
 .search-input:focus{
   border-color: var(--periwinkle-2);
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb),0.2);
+}
+
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration,
+.search-input::-webkit-search-results-button,
+.search-input::-webkit-search-results-decoration{
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.search-input[type='search']{
+  appearance: textfield;
 }
 
 .search-input::-webkit-search-cancel-button,
