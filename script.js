@@ -122,6 +122,38 @@ const products = [
   }
 ];
 
+
+
+const scriptsHubData = {
+  // Update this list to change paid rankings.
+  tierListPaid: [
+    { tier: 'S', executor: 'Pluton', notes: 'Best overall reliability and performance.' },
+    { tier: 'A', executor: 'Aether Decompiler', notes: 'Excellent reverse tooling and stability.' },
+    { tier: 'B', executor: 'KernelForge', notes: 'Powerful but setup is heavier for most users.' }
+  ],
+  // Update this list to change free rankings.
+  tierListFree: [
+    { tier: 'S', executor: 'Nebula AI Runner', notes: 'Strong free option for mobile-heavy workflows.' },
+    { tier: 'A', executor: 'MiniCore', notes: 'Lightweight and good on lower-end systems.' },
+    { tier: 'C', executor: 'Sigma Suite', notes: 'Only worth considering for niche use cases.' }
+  ],
+  // Update this list to manage popular scripts shown in the UI.
+  popularScripts: [
+    {
+      name: 'Universal Auto-Farm',
+      game: 'Multi-game',
+      description: 'General-purpose automation loop with teleport and anti-AFK toggles.',
+      script: 'loadstring(game:HttpGet("https://example.com/universal-autofarm.lua"))()'
+    },
+    {
+      name: 'Dungeon Assist',
+      game: 'Dungeon Quest',
+      description: 'Auto target assist and route preset loader for dungeon runs.',
+      script: 'loadstring(game:HttpGet("https://example.com/dungeon-assist.lua"))()'
+    }
+  ]
+};
+
 const featureIconMap = {
   "Decompiler": "#icon-decompiler",
   "Multi-instance": "#icon-multi",
@@ -375,8 +407,179 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
 
+
+function renderTierList(containerId, entries) {
+  const wrap = qs(`#${containerId}`);
+  if (!wrap) return;
+
+  wrap.innerHTML = entries.map(entry => `
+    <article class="rank-item rank-tier-${escapeHtml(String(entry.tier || '').toLowerCase())}">
+      <div class="rank-badge">${escapeHtml(entry.tier)}</div>
+      <div>
+        <h4>${escapeHtml(entry.executor)}</h4>
+        <p>${escapeHtml(entry.notes)}</p>
+      </div>
+    </article>
+  `).join('');
+}
+
+function renderPopularScripts() {
+  const wrap = qs('#popularScriptsList');
+  if (!wrap) return;
+
+  wrap.innerHTML = scriptsHubData.popularScripts.map(item => `
+    <article class="script-card">
+      <div class="script-card-head">
+        <h4>${escapeHtml(item.name)}</h4>
+        <span>${escapeHtml(item.game)}</span>
+      </div>
+      <p>${escapeHtml(item.description)}</p>
+      <pre>${escapeHtml(item.script)}</pre>
+    </article>
+  `).join('');
+}
+
+const savedScriptsStorageKey = 'voxlis_saved_scripts';
+let currentSavedScriptId = null;
+
+function getSavedScripts() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(savedScriptsStorageKey) || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function writeSavedScripts(items) {
+  localStorage.setItem(savedScriptsStorageKey, JSON.stringify(items));
+}
+
+function renderSavedScriptsList() {
+  const wrap = qs('#savedScriptsList');
+  if (!wrap) return;
+
+  const items = getSavedScripts();
+  if (!items.length) {
+    wrap.innerHTML = '<p class="saved-empty">No saved scripts yet. Start typing and one will be created automatically.</p>';
+    return;
+  }
+
+  wrap.innerHTML = items.map(item => `
+    <button class="saved-script-item ${item.id === currentSavedScriptId ? 'is-active' : ''}" data-saved-script-id="${escapeHtml(item.id)}" type="button">
+      <strong>${escapeHtml(item.title || 'Untitled script')}</strong>
+      <span>${new Date(item.updatedAt).toLocaleString()}</span>
+    </button>
+  `).join('');
+}
+
+function setEditorFromSavedScript(item) {
+  qs('#savedScriptName').value = item?.title || '';
+  qs('#savedScriptBody').value = item?.body || '';
+}
+
+function ensureSelectedScript() {
+  const items = getSavedScripts();
+  if (currentSavedScriptId && items.some(item => item.id === currentSavedScriptId)) return;
+  if (items.length) {
+    currentSavedScriptId = items[0].id;
+    setEditorFromSavedScript(items[0]);
+    return;
+  }
+
+  const newId = `script_${Date.now()}`;
+  const fresh = { id: newId, title: '', body: '', updatedAt: Date.now() };
+  writeSavedScripts([fresh]);
+  currentSavedScriptId = newId;
+  setEditorFromSavedScript(fresh);
+}
+
+function saveCurrentScript() {
+  const nameInput = qs('#savedScriptName');
+  const bodyInput = qs('#savedScriptBody');
+  if (!nameInput || !bodyInput) return;
+
+  ensureSelectedScript();
+  const items = getSavedScripts();
+  const idx = items.findIndex(item => item.id === currentSavedScriptId);
+  if (idx === -1) return;
+
+  items[idx] = {
+    ...items[idx],
+    title: nameInput.value.trim(),
+    body: bodyInput.value,
+    updatedAt: Date.now()
+  };
+
+  writeSavedScripts(items);
+  renderSavedScriptsList();
+}
+
+function createNewSavedScript() {
+  const items = getSavedScripts();
+  const newId = `script_${Date.now()}`;
+  const fresh = { id: newId, title: '', body: '', updatedAt: Date.now() };
+  items.unshift(fresh);
+  writeSavedScripts(items);
+  currentSavedScriptId = newId;
+  setEditorFromSavedScript(fresh);
+  renderSavedScriptsList();
+  qs('#savedScriptName').focus();
+}
+
+function initScriptsHub() {
+  renderTierList('tierPaidList', scriptsHubData.tierListPaid);
+  renderTierList('tierFreeList', scriptsHubData.tierListFree);
+  renderPopularScripts();
+
+  ensureSelectedScript();
+  renderSavedScriptsList();
+
+  qsa('.subtab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-subtab-target');
+      qsa('.subtab-btn').forEach(item => {
+        const active = item === btn;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-selected', String(active));
+      });
+      qsa('.subtab-panel').forEach(panel => {
+        panel.hidden = panel.id !== target;
+      });
+    });
+  });
+
+  qsa('.page-switch-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-page-target');
+      qsa('.page-switch-btn').forEach(item => item.classList.toggle('is-active', item === btn));
+      qsa('.app-page').forEach(page => {
+        page.hidden = page.id !== target;
+      });
+      const onScriptsPage = target === 'scriptsPage';
+      qs('#sidebar').hidden = onScriptsPage;
+      qs('#searchInput').disabled = onScriptsPage;
+      qs('#clearSearchBtn').disabled = onScriptsPage;
+    });
+  });
+
+  qs('#savedScriptsList').addEventListener('click', event => {
+    const trigger = event.target.closest('[data-saved-script-id]');
+    if (!trigger) return;
+    currentSavedScriptId = trigger.getAttribute('data-saved-script-id');
+    const selected = getSavedScripts().find(item => item.id === currentSavedScriptId);
+    setEditorFromSavedScript(selected);
+    renderSavedScriptsList();
+  });
+
+  qs('#savedScriptName').addEventListener('input', saveCurrentScript);
+  qs('#savedScriptBody').addEventListener('input', saveCurrentScript);
+  qs('#newSavedScriptBtn').addEventListener('click', createNewSavedScript);
+}
+
 function init() {
   renderProducts(products);
+  initScriptsHub();
 
   qs('#searchInput').addEventListener('input', applyAllFilters);
   qs('#clearSearchBtn').addEventListener('click', () => {
