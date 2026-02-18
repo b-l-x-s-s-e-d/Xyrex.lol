@@ -32,6 +32,23 @@
         </div>
       </div>
 
+      <div class="theme-control-wrap">
+        <button id="themeToggleBtn" class="theme-circle-btn" title="Customize theme" aria-label="Customize theme">🖌️</button>
+        <div id="themePanel" class="theme-panel" hidden>
+          <p class="theme-panel-title">Theme Mood</p>
+          <div class="theme-presets" role="group" aria-label="Preset themes">
+            <button class="theme-swatch" type="button" data-theme-preset="lavender" style="--swatch:#a88ffb;" aria-label="Lavender dusk"></button>
+            <button class="theme-swatch" type="button" data-theme-preset="teal" style="--swatch:#6fc4c8;" aria-label="Mint noir"></button>
+            <button class="theme-swatch" type="button" data-theme-preset="rose" style="--swatch:#f5a6bf;" aria-label="Rose night"></button>
+            <button class="theme-swatch" type="button" data-theme-preset="peach" style="--swatch:#f2b68f;" aria-label="Peach glow"></button>
+          </div>
+          <label class="theme-custom-label" for="customThemeColor">Custom RGB / HEX</label>
+          <input id="customThemeColor" class="theme-custom-input" type="text" placeholder="rgb(120,150,255) or #7896ff" />
+          <button id="applyCustomThemeBtn" class="btn-primary theme-apply-btn" type="button">Apply custom</button>
+          <button id="resetThemeBtn" class="btn-ghost-solid theme-reset-btn" type="button">Set to default</button>
+        </div>
+      </div>
+
       <div class="nav-spacer"></div>
 
       <nav class="page-switch" aria-label="Page navigation">
@@ -133,7 +150,7 @@
           <button class="subtab-btn" role="tab" aria-selected="false" data-subtab-target="tierFreePanel">Executor Tier List (Free)</button>
           <button class="subtab-btn" role="tab" aria-selected="false" data-subtab-target="popularScriptsPanel">Popular Scripts</button>
           <button class="subtab-btn" role="tab" aria-selected="false" data-subtab-target="savedScriptsPanel">Saved Scripts</button>
-          <button class="subtab-btn" role="tab" aria-selected="false" data-subtab-target="inDevelopmentPanel">In Development</button>
+          <button class="subtab-btn" role="tab" aria-selected="false" data-subtab-target="recentChangesPanel">Recent Changes</button>
         </div>
 
         <section id="tierPaidPanel" class="subtab-panel" role="tabpanel">
@@ -167,12 +184,15 @@
           <div id="savedScriptsList" class="saved-script-list"></div>
         </section>
 
-        <section id="inDevelopmentPanel" class="subtab-panel" role="tabpanel" hidden>
-          <h3>In Development</h3>
+        <section id="recentChangesPanel" class="subtab-panel" role="tabpanel" hidden>
+          <h3>Recent Changes</h3>
           <ul class="dev-list">
-            <li>Advanced script categories and search inside saved scripts.</li>
-            <li>Version history for script revisions.</li>
-            <li>Cloud sync for saved scripts across devices.</li>
+            <li>Added Free + Paid price filtering for executors with both options.</li>
+            <li>Added delete support for the currently selected saved script.</li>
+            <li>Stopped saving untitled/empty script drafts by requiring both title and content.</li>
+            <li>Removed edit-tip helper text from script hub sections.</li>
+            <li>Fixed duplicate search clear icons by using only one custom clear control.</li>
+            <li>Added full-page mood theming with presets, custom colour input, and a default reset button.</li>
           </ul>
         </section>
       </section>
